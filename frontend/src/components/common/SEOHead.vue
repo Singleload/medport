@@ -58,10 +58,8 @@
         document.title = this.title;
         
         // Get existing meta tags
-        let metaTags = document.querySelectorAll('meta');
-        let linkTags = document.querySelectorAll('link[rel="canonical"]');
-        
-        console.log(`Found ${metaTags.length} meta tags and ${linkTags.length} link tags`);
+        //let metaTags = document.querySelectorAll('meta');
+        //let linkTags = document.querySelectorAll('link[rel="canonical"]');
 
         // Helper function to update or create meta tag
         const updateOrCreateMetaTag = (name, content, property = null) => {

@@ -1,5 +1,6 @@
 <template>
-    <nav class="navbar">
+  <div>
+    <nav class="navbar" :class="{ 'scrolled': scrolled }">
       <div class="container">
         <div class="navbar-content">
           <router-link to="/" class="navbar-brand">
@@ -13,7 +14,7 @@
           
           <div class="navbar-actions">
             <div class="cart-icon" @click="toggleCart">
-              <i class="fas fa-shopping-cart"></i>
+              <i class="ri-shopping-cart-2-line"></i>
               <span v-if="cartItemCount > 0" class="badge">{{ cartItemCount }}</span>
               
               <!-- Cart Dropdown -->
@@ -38,10 +39,11 @@
                   </div>
                   <div class="cart-footer">
                     <div class="cart-total">
-                      <p>Totalt: {{ formatPrice(cartTotal) }} kr</p>
+                      <p>Totalt:</p>
+                      <p>{{ formatPrice(cartTotal) }} kr</p>
                     </div>
                     <div class="cart-actions">
-                      <router-link to="/cart" class="btn btn-secondary" @click="showCartDropdown = false">
+                      <router-link to="/cart" class="btn btn-outline-primary" @click="showCartDropdown = false">
                         Visa varukorg
                       </router-link>
                       <router-link to="/checkout" class="btn btn-primary" @click="showCartDropdown = false">
@@ -54,213 +56,121 @@
             </div>
             
             <div class="user-icon">
-              <i class="fas fa-user"></i>
+              <i class="ri-user-3-line"></i>
+            </div>
+
+            <div class="mobile-menu-toggle" @click="toggleMobileMenu">
+              <i class="ri-menu-line"></i>
             </div>
           </div>
         </div>
       </div>
     </nav>
-  </template>
-  
-  <script>
-  import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
-  import { useStore } from 'vuex';
-  
-  export default {
-    name: 'AppNavbar',
-    setup() {
-      const store = useStore();
-      const showCartDropdown = ref(false);
-      
-      const cartItems = computed(() => store.getters['cart/cartItems']);
-      const cartItemCount = computed(() => store.getters['cart/cartItemCount']);
-      const cartTotal = computed(() => store.getters['cart/cartTotal']);
-      
-      const toggleCart = () => {
-        showCartDropdown.value = !showCartDropdown.value;
-      };
-      
-      const closeCart = (e) => {
-        if (!e.target.closest('.cart-icon')) {
-          showCartDropdown.value = false;
-        }
-      };
-      
-      const formatPrice = (price) => {
-        return new Intl.NumberFormat('sv-SE').format(price);
-      };
-      
-      // Close cart dropdown when clicking outside
-      onMounted(() => {
-        document.addEventListener('click', closeCart);
-      });
-      
-      onBeforeUnmount(() => {
-        document.removeEventListener('click', closeCart);
-      });
-      
-      return {
-        showCartDropdown,
-        cartItems,
-        cartItemCount,
-        cartTotal,
-        toggleCart,
-        formatPrice
-      };
-    }
-  };
-  </script>
-  
-  <style lang="scss" scoped>
-  .navbar {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" :class="{ 'active': showMobileMenu }">
+      <div class="mobile-menu-content">
+        <div class="mobile-menu-header">
+          <img src="@/assets/images/logo.png" alt="Svensk Hälsovård" height="40" />
+          <div class="mobile-menu-close" @click="toggleMobileMenu">
+            <i class="ri-close-line"></i>
+          </div>
+        </div>
+        
+        <div class="mobile-menu-links">
+          <router-link to="/" class="nav-link" @click="showMobileMenu = false">Hem</router-link>
+          <router-link to="/contact" class="nav-link" @click="showMobileMenu = false">Kontakt</router-link>
+        </div>
+        
+        <div class="mobile-menu-actions">
+          <router-link to="/cart" class="btn btn-outline-primary" @click="showMobileMenu = false">
+            <i class="ri-shopping-cart-2-line"></i> Varukorg
+            <span v-if="cartItemCount > 0" class="badge badge-primary">{{ cartItemCount }}</span>
+          </router-link>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
+import { useStore } from 'vuex';
+
+export default {
+  name: 'AppNavbar',
+  setup() {
+    const store = useStore();
+    const showCartDropdown = ref(false);
+    const showMobileMenu = ref(false);
+    const scrolled = ref(false);
     
-    .navbar-content {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 0;
-    }
+    const cartItems = computed(() => store.getters['cart/cartItems']);
+    const cartItemCount = computed(() => store.getters['cart/cartItemCount']);
+    const cartTotal = computed(() => store.getters['cart/cartTotal']);
     
-    .navbar-brand {
-      img {
-        height: 40px;
+    const toggleCart = (e) => {
+      e.stopPropagation();
+      showCartDropdown.value = !showCartDropdown.value;
+      
+      if (showCartDropdown.value) {
+        showMobileMenu.value = false;
       }
-    }
+    };
     
-    .nav-links {
-      display: flex;
-      gap: 1.5rem;
+    const toggleMobileMenu = () => {
+      showMobileMenu.value = !showMobileMenu.value;
       
-      .nav-link {
-        color: $dark;
-        font-weight: 500;
-        
-        &:hover, &.router-link-active {
-          color: $primary;
-        }
+      if (showMobileMenu.value) {
+        showCartDropdown.value = false;
       }
-    }
+    };
     
-    .navbar-actions {
-      display: flex;
-      align-items: center;
-      gap: 1.5rem;
-      
-      .cart-icon, .user-icon {
-        position: relative;
-        font-size: 1.25rem;
-        cursor: pointer;
-        
-        &:hover {
-          color: $primary;
-        }
-        
-        .badge {
-          position: absolute;
-          top: -8px;
-          right: -8px;
-          background-color: $primary;
-          color: white;
-          border-radius: 50%;
-          width: 20px;
-          height: 20px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 0.75rem;
-        }
+    const closeCart = (e) => {
+      if (!e.target.closest('.cart-icon')) {
+        showCartDropdown.value = false;
       }
-    }
+    };
     
-    .cart-dropdown {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 320px;
-      background-color: white;
-      border-radius: $border-radius;
-      box-shadow: $box-shadow;
-      padding: 1rem;
-      margin-top: 0.5rem;
-      z-index: 1000;
-      
-      .empty-cart {
-        text-align: center;
-        padding: 1rem;
+    const formatPrice = (price) => {
+      return new Intl.NumberFormat('sv-SE').format(price);
+    };
+    
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        scrolled.value = true;
+      } else {
+        scrolled.value = false;
       }
-      
-      .cart-items {
-        max-height: 300px;
-        overflow-y: auto;
-        
-        .cart-item {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 0.75rem 0;
-          border-bottom: 1px solid #eee;
-          
-          &:last-child {
-            border-bottom: none;
-          }
-          
-          .item-info {
-            flex: 1;
-            
-            h4 {
-              font-size: 0.9rem;
-              margin-bottom: 0.25rem;
-            }
-            
-            p {
-              font-size: 0.8rem;
-              color: #666;
-              margin: 0;
-            }
-          }
-          
-          .item-price {
-            text-align: right;
-            
-            p {
-              margin: 0;
-              font-size: 0.9rem;
-            }
-          }
-        }
-      }
-      
-      .cart-footer {
-        margin-top: 1rem;
-        
-        .cart-total {
-          display: flex;
-          justify-content: space-between;
-          font-weight: bold;
-          margin-bottom: 1rem;
-        }
-        
-        .cart-actions {
-          display: flex;
-          gap: 0.5rem;
-          
-          .btn {
-            flex: 1;
-            font-size: 0.9rem;
-          }
-        }
-      }
-    }
+    };
+    
+    // Close cart dropdown when clicking outside
+    onMounted(() => {
+      document.addEventListener('click', closeCart);
+      window.addEventListener('scroll', handleScroll);
+    });
+    
+    onBeforeUnmount(() => {
+      document.removeEventListener('click', closeCart);
+      window.removeEventListener('scroll', handleScroll);
+    });
+    
+    // Close mobile menu when route changes
+    watch(() => store.state.route, () => {
+      showMobileMenu.value = false;
+    }, { deep: true });
+    
+    return {
+      showCartDropdown,
+      showMobileMenu,
+      scrolled,
+      cartItems,
+      cartItemCount,
+      cartTotal,
+      toggleCart,
+      toggleMobileMenu,
+      formatPrice
+    };
   }
-  
-  @media (max-width: $breakpoint-md) {
-    .navbar {
-      .nav-links {
-        display: none;
-      }
-    }
-  }
-  </style>
+};
+</script>
