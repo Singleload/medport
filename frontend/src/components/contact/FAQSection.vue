@@ -31,7 +31,10 @@
           <div class="icon">
             <i class="ri-question-line"></i>
           </div>
-          <p>Hittar du inte svar på din fråga? <a href="#contact-form">Kontakta oss</a> så hjälper vi dig!</p>
+          <div class="content">
+            <p>Hittar du inte svar på din fråga?</p>
+            <a href="#contact-form" class="btn btn-primary">Kontakta oss</a>
+          </div>
         </div>
       </div>
     </div>
@@ -170,6 +173,10 @@ export default {
         overflow: hidden;
         transition: $transition-base;
         
+        &:hover {
+          transform: translateY(-3px);
+        }
+        
         &.active {
           box-shadow: $box-shadow-hover;
           
@@ -207,6 +214,7 @@ export default {
             background-color: #e2e8f0;
             color: #64748b;
             transition: $transition-base;
+            flex-shrink: 0;
             
             i {
               font-size: 1rem;
@@ -250,33 +258,47 @@ export default {
       padding: 2rem;
       display: flex;
       align-items: center;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-      text-align: center;
+      gap: 2rem;
+      
+      @media (max-width: $breakpoint-sm) {
+        flex-direction: column;
+        text-align: center;
+      }
       
       .icon {
-        width: 60px;
-        height: 60px;
-        background-color: rgba($primary, 0.1);
+        width: 70px;
+        height: 70px;
+        background-color: $primary-lighter;
         color: $primary;
         font-size: 2rem;
         border-radius: 50%;
         display: flex;
         align-items: center;
         justify-content: center;
+        flex-shrink: 0;
       }
       
-      p {
-        margin: 0;
-        font-size: 1.1rem;
+      .content {
+        flex: 1;
         
-        a {
-          color: $primary;
-          font-weight: 700;
+        p {
+          margin-bottom: 1rem;
+          font-size: 1.1rem;
+          font-weight: 500;
+          color: $dark;
+        }
+        
+        .btn {
+          display: inline-flex;
+          padding: 0.75rem 1.5rem;
+          font-weight: 600;
+          box-shadow: $box-shadow;
+          align-items: center;
+          gap: 0.5rem;
           
           &:hover {
-            text-decoration: underline;
+            transform: translateY(-3px);
+            box-shadow: $box-shadow-hover;
           }
         }
       }

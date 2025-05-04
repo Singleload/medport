@@ -63,8 +63,7 @@
                   <div class="content">
                     <h3>Öppettider</h3>
                     <p>Måndag - Fredag: 08:00 - 17:00</p>
-                    <p>Lördag: Stängt</p>
-                    <p>Söndag: Stängt</p>
+                    <p>Lördag - Söndag: Stängt</p>
                   </div>
                 </div>
               </div>
@@ -81,6 +80,9 @@
                   <a href="#" aria-label="LinkedIn">
                     <i class="ri-linkedin-fill"></i>
                   </a>
+                  <a href="#" aria-label="Twitter">
+                    <i class="ri-twitter-fill"></i>
+                  </a>
                 </div>
               </div>
             </div>
@@ -91,87 +93,7 @@
               <h2>Skicka meddelande</h2>
               <p>Fyll i formuläret nedan så återkommer vi till dig så snart som möjligt</p>
               
-              <form @submit.prevent="submitContactForm" class="contact-form">
-                <div class="form-group">
-                  <label for="name">Namn <span class="required">*</span></label>
-                  <input 
-                    type="text" 
-                    id="name" 
-                    v-model="contactForm.name" 
-                    class="form-control" 
-                    required
-                  >
-                </div>
-                
-                <div class="form-group">
-                  <label for="email">E-post <span class="required">*</span></label>
-                  <input 
-                    type="email" 
-                    id="email" 
-                    v-model="contactForm.email" 
-                    class="form-control" 
-                    required
-                  >
-                </div>
-                
-                <div class="form-group">
-                  <label for="subject">Ämne <span class="required">*</span></label>
-                  <input 
-                    type="text" 
-                    id="subject" 
-                    v-model="contactForm.subject" 
-                    class="form-control" 
-                    required
-                  >
-                </div>
-                
-                <div class="form-group">
-                  <label for="message">Meddelande <span class="required">*</span></label>
-                  <textarea 
-                    id="message" 
-                    v-model="contactForm.message" 
-                    class="form-control" 
-                    rows="5" 
-                    required
-                  ></textarea>
-                </div>
-                
-                <div class="form-group">
-                  <div class="form-check">
-                    <input 
-                      type="checkbox" 
-                      id="consent" 
-                      v-model="contactForm.consent" 
-                      class="form-check-input" 
-                      required
-                    >
-                    <label for="consent" class="form-check-label">
-                      Jag godkänner att Svensk Hälsovård behandlar mina personuppgifter enligt deras integritetspolicy.
-                    </label>
-                  </div>
-                </div>
-                
-                <div v-if="formSubmitted" class="alert" :class="formSubmitSuccess ? 'alert-success' : 'alert-danger'">
-                  <div class="alert-icon">
-                    <i v-if="formSubmitSuccess" class="ri-check-line"></i>
-                    <i v-else class="ri-error-warning-line"></i>
-                  </div>
-                  <div class="alert-content">
-                    {{ formSubmitMessage }}
-                  </div>
-                </div>
-                
-                <div class="form-actions">
-                  <button type="submit" class="btn btn-primary" :disabled="isSubmitting">
-                    <span v-if="isSubmitting">
-                      <i class="ri-loader-4-line ri-spin"></i> Skickar...
-                    </span>
-                    <span v-else>
-                      <i class="ri-send-plane-line"></i> Skicka meddelande
-                    </span>
-                  </button>
-                </div>
-              </form>
+              <ContactForm @form-submitted="handleFormSubmission" />
             </div>
           </div>
         </div>
@@ -180,11 +102,16 @@
     
     <section class="section map-section">
       <div class="container">
+        <div class="section-title">
+          <h2>Hitta till oss</h2>
+          <p>Besök oss på vår klinik i centrala Stockholm</p>
+        </div>
+        
         <div class="map-container">
           <iframe 
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2034.7806141120752!2d18.054708516169036!3d59.33483218166178!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x465f9d5cbe7d9a1f%3A0x266f5c00bb93edd1!2sStockholm%2C%20Sweden!5e0!3m2!1sen!2sus!4v1631007425457!5m2!1sen!2sus" 
             width="100%" 
-            height="450" 
+            height="500" 
             style="border:0;" 
             allowfullscreen="" 
             loading="lazy"
@@ -211,76 +138,32 @@
 import { ref } from 'vue';
 import SEOHead from '@/components/common/SEOHead.vue';
 import FAQSection from '@/components/contact/FAQSection.vue';
+import ContactForm from '@/components/contact/ContactForm.vue';
 
 export default {
   name: 'ContactPage',
   components: {
     SEOHead,
-    FAQSection
+    FAQSection,
+    ContactForm
   },
   setup() {
-    const contactForm = ref({
-      name: '',
-      email: '',
-      subject: '',
-      message: '',
-      consent: false
-    });
-    
-    const isSubmitting = ref(false);
-    const formSubmitted = ref(false);
-    const formSubmitSuccess = ref(false);
-    const formSubmitMessage = ref('');
-    
-    const submitContactForm = async () => {
-      try {
-        isSubmitting.value = true;
-        formSubmitted.value = false;
-        
-        // In a real application, you would send this to the backend
-        // For this implementation, we'll simulate a successful submission
-        // await api.post('/api/contact', contactForm.value);
-        
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 1500));
-        
-        // Reset form on success
-        contactForm.value = {
-          name: '',
-          email: '',
-          subject: '',
-          message: '',
-          consent: false
-        };
-        
-        formSubmitSuccess.value = true;
-        formSubmitMessage.value = 'Tack för ditt meddelande! Vi återkommer till dig så snart som möjligt.';
-        formSubmitted.value = true;
-        
-        // Scroll to show the success message
+    const handleFormSubmission = (result) => {
+      console.log('Form submission result:', result);
+      // Here you can add additional logic after form submission
+      // For example, scroll to show the success message
+      if (result.success) {
         setTimeout(() => {
           const alertElement = document.querySelector('.alert');
           if (alertElement) {
             alertElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }, 100);
-      } catch (error) {
-        console.error('Contact form submission error:', error);
-        formSubmitSuccess.value = false;
-        formSubmitMessage.value = 'Ett fel uppstod när meddelandet skulle skickas. Försök igen senare.';
-        formSubmitted.value = true;
-      } finally {
-        isSubmitting.value = false;
       }
     };
     
     return {
-      contactForm,
-      isSubmitting,
-      formSubmitted,
-      formSubmitSuccess,
-      formSubmitMessage,
-      submitContactForm
+      handleFormSubmission
     };
   }
 };
@@ -332,8 +215,44 @@ export default {
     }
   }
   
+  .section-title {
+    text-align: center;
+    margin-bottom: 3rem;
+    
+    h2 {
+      color: $primary;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      font-size: 2.25rem;
+      position: relative;
+      padding-bottom: 1rem;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80px;
+        height: 3px;
+        background-color: $primary-light;
+      }
+      
+      @media (max-width: $breakpoint-md) {
+        font-size: 1.75rem;
+      }
+    }
+    
+    p {
+      font-size: 1.1rem;
+      color: #4a5568;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+  }
+  
   .contact-section {
-    padding-top: 3rem;
+    padding: 5rem 0;
     
     .contact-grid {
       display: grid;
@@ -357,11 +276,24 @@ export default {
             margin-bottom: 1rem;
             font-weight: 700;
             font-size: 1.75rem;
+            position: relative;
+            padding-bottom: 1rem;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 50px;
+              height: 3px;
+              background-color: $primary-light;
+            }
           }
           
           p {
             color: #4a5568;
             margin-bottom: 2rem;
+            line-height: 1.7;
           }
           
           .info-items {
@@ -371,19 +303,27 @@ export default {
               display: flex;
               align-items: flex-start;
               margin-bottom: 1.5rem;
+              padding-bottom: 1.5rem;
+              border-bottom: 1px dashed #e2e8f0;
+              
+              &:last-child {
+                margin-bottom: 0;
+                padding-bottom: 0;
+                border-bottom: none;
+              }
               
               .icon {
                 flex-shrink: 0;
-                width: 45px;
-                height: 45px;
+                width: 50px;
+                height: 50px;
                 border-radius: 50%;
-                background-color: rgba($primary, 0.1);
+                background-color: $primary-lighter;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 margin-right: 1rem;
                 color: $primary;
-                font-size: 1.25rem;
+                font-size: 1.5rem;
               }
               
               .content {
@@ -393,7 +333,7 @@ export default {
                   margin-bottom: 0.5rem;
                   font-size: 1.1rem;
                   font-weight: 700;
-                  color: $dark;
+                  color: $primary;
                 }
                 
                 p {
@@ -408,8 +348,10 @@ export default {
                 
                 a {
                   color: $primary;
+                  transition: $transition-base;
                   
                   &:hover {
+                    color: $primary-light;
                     text-decoration: underline;
                   }
                 }
@@ -422,7 +364,7 @@ export default {
               margin-bottom: 1rem;
               font-size: 1.1rem;
               font-weight: 700;
-              color: $dark;
+              color: $primary;
             }
             
             .links {
@@ -433,7 +375,7 @@ export default {
                 width: 40px;
                 height: 40px;
                 border-radius: 50%;
-                background-color: rgba($primary, 0.1);
+                background-color: $primary-lighter;
                 color: $primary;
                 display: flex;
                 align-items: center;
@@ -445,6 +387,7 @@ export default {
                   background-color: $primary;
                   color: $light;
                   transform: translateY(-3px);
+                  box-shadow: $box-shadow;
                 }
               }
             }
@@ -464,109 +407,24 @@ export default {
             margin-bottom: 0.5rem;
             font-weight: 700;
             font-size: 1.75rem;
+            position: relative;
+            padding-bottom: 1rem;
+            
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              left: 0;
+              width: 50px;
+              height: 3px;
+              background-color: $primary-light;
+            }
           }
           
           p {
             color: #4a5568;
             margin-bottom: 2rem;
-          }
-          
-          .contact-form {
-            .form-group {
-              margin-bottom: 1.5rem;
-              
-              label {
-                display: block;
-                margin-bottom: 0.5rem;
-                font-weight: 600;
-                color: $dark;
-                
-                .required {
-                  color: $danger;
-                }
-              }
-              
-              .form-control {
-                width: 100%;
-                padding: 0.875rem 1rem;
-                border: 1px solid #e2e8f0;
-                border-radius: $border-radius;
-                transition: $transition-base;
-                
-                &:focus {
-                  border-color: $primary;
-                  box-shadow: 0 0 0 3px rgba($primary, 0.15);
-                  outline: none;
-                }
-              }
-              
-              textarea.form-control {
-                resize: vertical;
-                min-height: 120px;
-              }
-              
-              .form-check {
-                display: flex;
-                align-items: flex-start;
-                
-                .form-check-input {
-                  margin-top: 0.3rem;
-                  margin-right: 0.75rem;
-                }
-                
-                .form-check-label {
-                  font-weight: normal;
-                  font-size: 0.9rem;
-                }
-              }
-            }
-            
-            .alert {
-              display: flex;
-              align-items: flex-start;
-              padding: 1.25rem;
-              border-radius: $border-radius;
-              margin-bottom: 1.5rem;
-              
-              .alert-icon {
-                flex-shrink: 0;
-                margin-right: 1rem;
-                font-size: 1.5rem;
-              }
-              
-              &.alert-success {
-                background-color: lighten($success, 45%);
-                border-left: 4px solid $success;
-                
-                .alert-icon {
-                  color: $success;
-                }
-              }
-              
-              &.alert-danger {
-                background-color: lighten($danger, 45%);
-                border-left: 4px solid $danger;
-                
-                .alert-icon {
-                  color: $danger;
-                }
-              }
-            }
-            
-            .form-actions {
-              .btn {
-                padding: 0.875rem 2rem;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                
-                i {
-                  font-size: 1.25rem;
-                }
-              }
-            }
+            line-height: 1.7;
           }
         }
       }
@@ -574,11 +432,23 @@ export default {
   }
   
   .map-section {
+    padding: 5rem 0;
+    background-color: #f8f9fa;
+    
     .map-container {
       border-radius: $border-radius-lg;
       overflow: hidden;
       box-shadow: $box-shadow;
+      
+      iframe {
+        display: block;
+        border-radius: $border-radius-lg;
+      }
     }
+  }
+  
+  .faq-section {
+    padding: 5rem 0;
   }
 }
 </style>
