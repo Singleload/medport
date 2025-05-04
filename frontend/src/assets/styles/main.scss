@@ -1,0 +1,308 @@
+@import 'variables';
+
+// Reset and base styles
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: $font-family-sans-serif;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $dark;
+  background-color: $light;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: $transition-base;
+
+  &:hover {
+    color: $primary-light;
+  }
+}
+
+// Typography
+h1, h2, h3, h4, h5, h6 {
+  margin-bottom: $spacer;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.75rem; }
+h4 { font-size: 1.5rem; }
+h5 { font-size: 1.25rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: $spacer;
+}
+
+// Container
+.container {
+  width: 100%;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  
+  @media (min-width: $breakpoint-sm) {
+    max-width: map-get($container-max-widths, sm);
+  }
+  
+  @media (min-width: $breakpoint-md) {
+    max-width: map-get($container-max-widths, md);
+  }
+  
+  @media (min-width: $breakpoint-lg) {
+    max-width: map-get($container-max-widths, lg);
+  }
+  
+  @media (min-width: $breakpoint-xl) {
+    max-width: map-get($container-max-widths, xl);
+  }
+}
+
+// Buttons
+.btn {
+  display: inline-block;
+  font-weight: 400;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  user-select: none;
+  border: 1px solid transparent;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  border-radius: $border-radius;
+  transition: $transition-base;
+  cursor: pointer;
+  
+  &:hover, &:focus {
+    text-decoration: none;
+  }
+  
+  &:focus {
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+  }
+}
+
+.btn-primary {
+  color: $light;
+  background-color: $primary;
+  border-color: $primary;
+  
+  &:hover {
+    background-color: darken($primary, 7.5%);
+    border-color: darken($primary, 10%);
+  }
+}
+
+.btn-secondary {
+  color: $dark;
+  background-color: $secondary;
+  border-color: $secondary;
+  
+  &:hover {
+    background-color: darken($secondary, 7.5%);
+    border-color: darken($secondary, 10%);
+  }
+}
+
+// Form elements
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-control {
+  display: block;
+  width: 100%;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: $dark;
+  background-color: $light;
+  background-clip: padding-box;
+  border: 1px solid #ced4da;
+  border-radius: $border-radius;
+  transition: $transition-base;
+  
+  &:focus {
+    color: $dark;
+    background-color: $light;
+    border-color: lighten($primary, 25%);
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba($primary, 0.25);
+  }
+}
+
+// Cards
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: $light;
+  background-clip: border-box;
+  border: 1px solid rgba($dark, 0.125);
+  border-radius: $border-radius;
+  
+  .card-body {
+    flex: 1 1 auto;
+    padding: 1.25rem;
+  }
+  
+  .card-title {
+    margin-bottom: 0.75rem;
+  }
+  
+  .card-text:last-child {
+    margin-bottom: 0;
+  }
+}
+
+// Alert
+.alert {
+  position: relative;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid transparent;
+  border-radius: $border-radius;
+}
+
+.alert-success {
+  color: darken($success, 30%);
+  background-color: lighten($success, 40%);
+  border-color: lighten($success, 35%);
+}
+
+.alert-danger {
+  color: darken($danger, 30%);
+  background-color: lighten($danger, 40%);
+  border-color: lighten($danger, 35%);
+}
+
+// Utilities
+.text-center { text-align: center; }
+.text-left { text-align: left; }
+.text-right { text-align: right; }
+
+.mt-0 { margin-top: 0 !important; }
+.mb-0 { margin-bottom: 0 !important; }
+.mt-1 { margin-top: map-get($spacers, 1) !important; }
+.mb-1 { margin-bottom: map-get($spacers, 1) !important; }
+.mt-2 { margin-top: map-get($spacers, 2) !important; }
+.mb-2 { margin-bottom: map-get($spacers, 2) !important; }
+.mt-3 { margin-top: map-get($spacers, 3) !important; }
+.mb-3 { margin-bottom: map-get($spacers, 3) !important; }
+.mt-4 { margin-top: map-get($spacers, 4) !important; }
+.mb-4 { margin-bottom: map-get($spacers, 4) !important; }
+.mt-5 { margin-top: map-get($spacers, 5) !important; }
+.mb-5 { margin-bottom: map-get($spacers, 5) !important; }
+
+// Visibility
+.d-none { display: none; }
+.d-flex { display: flex; }
+
+// Flex
+.flex-column { flex-direction: column; }
+.justify-content-center { justify-content: center; }
+.justify-content-between { justify-content: space-between; }
+.align-items-center { align-items: center; }
+
+// Colors
+.bg-primary { background-color: $primary !important; }
+.bg-light { background-color: $light !important; }
+.text-primary { color: $primary !important; }
+.text-light { color: $light !important; }
+
+// Specific application styles
+.navbar {
+  background-color: $light;
+  box-shadow: $box-shadow-sm;
+  padding: 1rem;
+  
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    
+    img {
+      height: 40px;
+    }
+  }
+  
+  .navbar-nav {
+    display: flex;
+    align-items: center;
+    
+    .nav-item {
+      margin-left: 1rem;
+      
+      .nav-link {
+        color: $dark;
+        font-weight: 500;
+        
+        &:hover {
+          color: $primary;
+        }
+      }
+    }
+  }
+}
+
+.cart-icon, .user-icon {
+  position: relative;
+  cursor: pointer;
+  
+  .badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    padding: 0.25rem 0.5rem;
+    border-radius: 50%;
+    background-color: $primary;
+    color: $light;
+    font-size: 0.75rem;
+  }
+}
+
+.service-card {
+  margin-bottom: 2rem;
+  transition: $transition-base;
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: $box-shadow;
+  }
+}
+
+.checkout-form {
+  background-color: $light;
+  padding: 2rem;
+  border-radius: $border-radius;
+  box-shadow: $box-shadow-sm;
+}
+
+.confirmation-view {
+  text-align: center;
+  padding: 3rem 0;
+  
+  .icon {
+    font-size: 4rem;
+    color: $success;
+    margin-bottom: 1rem;
+  }
+}
