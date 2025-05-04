@@ -61,6 +61,8 @@
         let metaTags = document.querySelectorAll('meta');
         let linkTags = document.querySelectorAll('link[rel="canonical"]');
         
+        console.log(`Found ${metaTags.length} meta tags and ${linkTags.length} link tags`);
+
         // Helper function to update or create meta tag
         const updateOrCreateMetaTag = (name, content, property = null) => {
           // Check if meta tag exists

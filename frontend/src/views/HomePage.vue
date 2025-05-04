@@ -156,7 +156,7 @@
   .home-page {
     .hero {
       background-color: #f8f9fa;
-      background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('/assets/images/hero-bg.jpg');
+      background-image: linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), url('@/assets/images/hero-bg.jpg');
       background-size: cover;
       background-position: center;
       padding: 5rem 0;

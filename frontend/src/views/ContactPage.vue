@@ -150,7 +150,6 @@
   import { ref } from 'vue';
   import SEOHead from '@/components/common/SEOHead.vue';
   import FAQSection from '@/components/contact/FAQSection.vue';
-  import api from '@/services/api';
   
   export default {
     name: 'ContactPage',
