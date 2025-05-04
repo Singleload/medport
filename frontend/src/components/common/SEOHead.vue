@@ -1,5 +1,7 @@
 <template>
-    <!-- This component doesn't render anything in the DOM -->
+    <div style="display: none;">
+    <!-- This component doesn't render anything visible in the DOM -->
+  </div>
 </template>
   
   <script>

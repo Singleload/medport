@@ -54,10 +54,10 @@
   </template>
   
   <script>
-  import { ref, onMounted } from 'vue';
+  import { ref } from 'vue';
   
   export default {
-    name: 'Footer',
+    name: 'AppFooter',
     setup() {
       const currentYear = ref(new Date().getFullYear());
       

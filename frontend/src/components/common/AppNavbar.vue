@@ -67,7 +67,7 @@
   import { useStore } from 'vuex';
   
   export default {
-    name: 'Navbar',
+    name: 'AppNavbar',
     setup() {
       const store = useStore();
       const showCartDropdown = ref(false);
