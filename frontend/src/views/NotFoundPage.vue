@@ -97,6 +97,7 @@ export default {
       margin-bottom: 1rem;
       background: linear-gradient(135deg, $primary, $primary-light);
       -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
     }
     

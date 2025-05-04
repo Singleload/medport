@@ -6,6 +6,7 @@
           <div class="service-image">
             <img :src="service.image" :alt="service.name" />
             <div v-if="service.discountedPrice" class="discount-badge">
+              <i class="ri-price-tag-3-line"></i>
               -{{ calculateDiscount(service.price, service.discountedPrice) }}%
             </div>
             <div v-if="service.isSubscription" class="subscription-badge">
@@ -133,6 +134,9 @@ export default {
             border-radius: $border-radius-sm;
             font-weight: 700;
             font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
             box-shadow: 0 2px 5px rgba($dark, 0.15);
             z-index: 1;
           }
@@ -183,9 +187,18 @@ export default {
               margin-bottom: 0.75rem;
               
               i {
+                flex-shrink: 0;
+                width: 22px;
+                height: 22px;
+                background-color: rgba($primary, 0.1);
                 color: $primary;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
                 margin-right: 0.75rem;
-                margin-top: 0.25rem;
+                margin-top: 0.125rem;
+                font-size: 0.9rem;
               }
               
               span {

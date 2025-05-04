@@ -9,6 +9,7 @@
           
           <div class="nav-links">
             <router-link to="/" class="nav-link">Hem</router-link>
+            <router-link to="/#services" class="nav-link">Tjänster</router-link>
             <router-link to="/contact" class="nav-link">Kontakt</router-link>
           </div>
           
@@ -20,6 +21,7 @@
               <!-- Cart Dropdown -->
               <div v-if="showCartDropdown" class="cart-dropdown">
                 <div v-if="cartItems.length === 0" class="empty-cart">
+                  <i class="ri-shopping-cart-line empty-cart-icon"></i>
                   <p>Din varukorg är tom</p>
                 </div>
                 <div v-else>
@@ -44,10 +46,10 @@
                     </div>
                     <div class="cart-actions">
                       <router-link to="/cart" class="btn btn-outline-primary" @click="showCartDropdown = false">
-                        Visa varukorg
+                        <i class="ri-shopping-cart-line"></i> Visa varukorg
                       </router-link>
                       <router-link to="/checkout" class="btn btn-primary" @click="showCartDropdown = false">
-                        Till kassan
+                        <i class="ri-arrow-right-line"></i> Till kassan
                       </router-link>
                     </div>
                   </div>
@@ -78,8 +80,15 @@
         </div>
         
         <div class="mobile-menu-links">
-          <router-link to="/" class="nav-link" @click="showMobileMenu = false">Hem</router-link>
-          <router-link to="/contact" class="nav-link" @click="showMobileMenu = false">Kontakt</router-link>
+          <router-link to="/" class="nav-link" @click="showMobileMenu = false">
+            <i class="ri-home-line"></i> Hem
+          </router-link>
+          <router-link to="/#services" class="nav-link" @click="showMobileMenu = false">
+            <i class="ri-heart-pulse-line"></i> Tjänster
+          </router-link>
+          <router-link to="/contact" class="nav-link" @click="showMobileMenu = false">
+            <i class="ri-customer-service-line"></i> Kontakt
+          </router-link>
         </div>
         
         <div class="mobile-menu-actions">
@@ -96,11 +105,13 @@
 <script>
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
 import { useStore } from 'vuex';
+import { useRoute } from 'vue-router';
 
 export default {
   name: 'AppNavbar',
   setup() {
     const store = useStore();
+    const route = useRoute();
     const showCartDropdown = ref(false);
     const showMobileMenu = ref(false);
     const scrolled = ref(false);
@@ -148,6 +159,7 @@ export default {
     onMounted(() => {
       document.addEventListener('click', closeCart);
       window.addEventListener('scroll', handleScroll);
+      handleScroll(); // Check initial scroll position
     });
     
     onBeforeUnmount(() => {
@@ -156,9 +168,9 @@ export default {
     });
     
     // Close mobile menu when route changes
-    watch(() => store.state.route, () => {
+    watch(() => route.path, () => {
       showMobileMenu.value = false;
-    }, { deep: true });
+    });
     
     return {
       showCartDropdown,
